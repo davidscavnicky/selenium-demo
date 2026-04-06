@@ -27,3 +27,13 @@ End-to-end flow in your project:
 4. Test executes Selenium steps
 5. On failure, screenshot saved
 6. Browser quits
+
+What been done:
+
+1. A clean Page Object Model structure
+2. Shared pytest fixture setup in conftest.py
+3. Real Selenium interaction with waits
+4. Positive and negative test cases
+5. Headless mode support
+6. Failure screenshots
+7. A passing suite
