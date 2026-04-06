@@ -19,3 +19,6 @@ class LoginPage(BasePage):
 
     def get_flash_message(self):
         return self.wait_for_element(*self.FLASH_MESSAGE).text
+
+    def is_open(self):
+        return "/login" in self.current_url()

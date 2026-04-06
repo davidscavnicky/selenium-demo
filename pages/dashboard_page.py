@@ -6,3 +6,9 @@ class DashboardPage(BasePage):
 
     def is_logout_visible(self):
         return self.wait_for_element(*self.LOGOUT_BUTTON).is_displayed()
+
+    def logout(self):
+        self.click(*self.LOGOUT_BUTTON)
+
+    def is_open(self):
+        return "/secure" in self.current_url()

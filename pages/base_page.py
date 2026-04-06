@@ -10,7 +10,7 @@ class BasePage:
         return self.driver.find_element(by, value)
 
     def click(self, by, value):
-        self.find(by, value).click()
+        self.wait_for_clickable(by, value).click()
 
     def type(self, by, value, text):
         element = self.find(by, value)
@@ -21,3 +21,11 @@ class BasePage:
         return WebDriverWait(self.driver, timeout).until(
             EC.presence_of_element_located((by, value))
         )
+
+    def wait_for_clickable(self, by, value, timeout=10):
+        return WebDriverWait(self.driver, timeout).until(
+            EC.element_to_be_clickable((by, value))
+        )
+
+    def current_url(self):
+        return self.driver.current_url
