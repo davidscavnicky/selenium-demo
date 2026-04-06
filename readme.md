@@ -1,35 +1,22 @@
 # Selenium Test Automation Demo
 
-## Tech Stack
-- Python
-- Selenium
-- Pytest
+Simple Selenium + Pytest demo project built around the Page Object Model.
 
-## Features
-- Functional tests (login success/failure)
-- Basic integration flow (login → dashboard)
-- Page Object Model (POM) design
+## Architecture
 
-## How to run
+- `pages/` contains reusable page objects and shared page helpers.
+- `tests/` contains the pytest test cases.
+- `conftest.py` provides the shared `driver` fixture, `--headless` option, and failure screenshots.
+- `requirements.txt` defines the Python dependencies.
+- `.github/workflows/tests.yml` runs the suite in GitHub Actions on push.
 
-```bash
-pip install -r requirements.txt
-pytest
+The flow is:
 
-.venv/bin/python -m pytest -q
-
-without view:
-
-.venv/bin/python -m pytest -q --headless
-
-End-to-end flow in your project:
-
-1. You run pytest
-2. Pytest loads conftest.py
-3. For each test needing driver, fixture starts browser
-4. Test executes Selenium steps
-5. On failure, screenshot saved
-6. Browser quits
+1. Pytest loads `conftest.py` automatically.
+2. The `driver` fixture starts Chrome for each test.
+3. Tests call page object methods instead of raw Selenium commands.
+4. If a test fails, a screenshot is saved in `screenshots/`.
+5. The browser is closed after the test finishes.
 
 What been done:
 
@@ -40,3 +27,51 @@ What been done:
 5. Headless mode support
 6. Failure screenshots
 7. A passing suite
+
+## Local Run
+
+Run these commands from the repository root.
+
+1. Create a virtual environment if needed:
+
+	python3 -m venv .venv
+
+2. Activate it:
+
+	macOS/Linux:
+
+	source .venv/bin/activate
+
+3. Install dependencies:
+
+	python -m pip install -r requirements.txt
+
+4. Run the full suite with a visible browser:
+
+	python -m pytest -q
+
+5. Run in headless mode:
+
+	python -m pytest -q --headless
+
+6. Run a single test file:
+
+	python -m pytest -q tests/test_login.py
+
+## CI Run
+
+The GitHub Actions workflow in [.github/workflows/tests.yml](.github/workflows/tests.yml) runs automatically on push to `main`.
+
+In CI it:
+
+- Uses Ubuntu and Python 3.12
+- Installs dependencies from `requirements.txt`
+- Runs `python -m pytest -q --headless`
+- Uploads `screenshots/` as an artifact if tests fail
+
+## Test Coverage
+
+- Valid login
+- Invalid login combinations
+- Logout flow
+- Dashboard visibility after login
