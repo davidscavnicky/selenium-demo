@@ -24,3 +24,35 @@ def test_invalid_login_combinations(driver, username, password, expected_message
     login_page.login(username, password)
 
     assert expected_message in login_page.get_flash_message()
+
+
+@pytest.mark.parametrize(
+    "username,expected_message",
+    [
+        ("tomsmith ", "Your username is invalid!"),
+        (" TOMSMITH", "Your username is invalid!"),
+        ("tomsmith!", "Your username is invalid!"),
+    ],
+)
+def test_username_edge_cases(driver, username, expected_message):
+    login_page = LoginPage(driver)
+    login_page.open()
+    login_page.login(username, "SuperSecretPassword!")
+
+    assert expected_message in login_page.get_flash_message()
+
+
+@pytest.mark.parametrize(
+    "password,expected_message",
+    [
+        ("SuperSecretPassword! ", "Your password is invalid!"),
+        ("supersecretpassword!", "Your password is invalid!"),
+        ("123456", "Your password is invalid!"),
+    ],
+)
+def test_password_edge_cases(driver, password, expected_message):
+    login_page = LoginPage(driver)
+    login_page.open()
+    login_page.login("tomsmith", password)
+
+    assert expected_message in login_page.get_flash_message()
