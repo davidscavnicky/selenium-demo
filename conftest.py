@@ -1,8 +1,17 @@
+"""Pytest configuration for Selenium tests.
+
+This file provides the shared browser fixture used by all tests, adds a
+`--headless` command-line flag, and captures screenshots when a test fails.
+Pytest discovers these hooks automatically because the file is named
+`conftest.py`.
+"""
+
 import os
 from datetime import datetime
 
 import pytest
-from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.webdriver import WebDriver as ChromeWebDriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 
@@ -24,13 +33,13 @@ def pytest_runtest_makereport(item, call):
 
 @pytest.fixture
 def driver(request):
-    options = webdriver.ChromeOptions()
+    options = Options()
     if request.config.getoption("--headless"):
         options.add_argument("--headless=new")
         options.add_argument("--window-size=1920,1080")
 
     service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
+    driver = ChromeWebDriver(service=service, options=options)
     if not request.config.getoption("--headless"):
         driver.maximize_window()
 
