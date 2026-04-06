@@ -11,4 +11,4 @@ class DashboardPage(BasePage):
         self.click(*self.LOGOUT_BUTTON)
 
     def is_open(self):
-        return "/secure" in self.current_url()
+        return self.is_url_contains("/secure")

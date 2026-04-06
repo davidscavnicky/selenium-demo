@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 class BasePage:
     def __init__(self, driver):
@@ -29,3 +30,12 @@ class BasePage:
 
     def current_url(self):
         return self.driver.current_url
+
+    def wait_for_url_contains(self, text, timeout=10):
+        return WebDriverWait(self.driver, timeout).until(EC.url_contains(text))
+
+    def is_url_contains(self, text, timeout=10):
+        try:
+            return self.wait_for_url_contains(text, timeout)
+        except TimeoutException:
+            return False
