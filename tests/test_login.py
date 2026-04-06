@@ -1,3 +1,5 @@
+import pytest
+
 from pages.login_page import LoginPage
 
 def test_valid_login(driver):
@@ -8,25 +10,17 @@ def test_valid_login(driver):
     assert "You logged into a secure area!" in login_page.get_flash_message()
 
 
-def test_invalid_login(driver):
+@pytest.mark.parametrize(
+    "username,password,expected_message",
+    [
+        ("wrong", "wrong", "Your username is invalid!"),
+        ("tomsmith", "wrong", "Your password is invalid!"),
+        ("", "", "Your username is invalid!"),
+    ],
+)
+def test_invalid_login_combinations(driver, username, password, expected_message):
     login_page = LoginPage(driver)
     login_page.open()
-    login_page.login("wrong", "wrong")
+    login_page.login(username, password)
 
-    assert "Your username is invalid!" in login_page.get_flash_message()
-
-
-def test_invalid_password(driver):
-    login_page = LoginPage(driver)
-    login_page.open()
-    login_page.login("tomsmith", "wrong")
-
-    assert "Your password is invalid!" in login_page.get_flash_message()
-
-
-def test_empty_credentials(driver):
-    login_page = LoginPage(driver)
-    login_page.open()
-    login_page.login("", "")
-
-    assert "Your username is invalid!" in login_page.get_flash_message()
+    assert expected_message in login_page.get_flash_message()
