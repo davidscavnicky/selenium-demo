@@ -18,6 +18,9 @@ pytest
 
 .venv/bin/python -m pytest -q
 
+without view:
+
+.venv/bin/python -m pytest -q --headless
 
 End-to-end flow in your project:
 
