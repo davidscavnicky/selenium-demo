@@ -75,3 +75,38 @@ In CI it:
 - Invalid login combinations
 - Logout flow
 - Dashboard visibility after login
+
+## Testing Layers
+
+1. Functional testing
+
+Verifies features work as expected.
+
+Examples:
+
+- User logs in and should land on dashboard/secure area.
+- Button click triggers the expected result.
+
+In this project, Selenium simulates a real user in a browser to validate these flows.
+
+2. Regression testing
+
+Ensures new changes did not break existing features.
+
+You rerun existing test cases automatically.
+
+This is where automation helps most: instead of manually clicking through everything after each change, the scripts do it repeatedly and consistently.
+
+3. Integration testing
+
+Tests how components work together.
+
+UI + real web app integration from login page to secure area (end-to-end user flow), especially in test_dashboard.py:13
+
+Example:
+
+- Frontend to backend to database flow works correctly.
+
+
+Selenium can be used here, but integration coverage is often strengthened by combining UI checks with API assertions, mocks, or backend checks.
+
